@@ -2,9 +2,18 @@ from tokenize import String
 import time
 import psycopg2
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Connexion a la base de donnée locale
-conn = psycopg2.connect(database='slm', user='postgres',
-                        host='127.0.0.1', port='5432')
+conn = psycopg2.connect(
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)
 
 
 def request(req: String) -> None:

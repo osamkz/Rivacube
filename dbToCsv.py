@@ -1,26 +1,33 @@
 import pandas as pd
 import psycopg2
 
+import os
+from dotenv import load_dotenv
 # Ne fonctionne pas pour l'instant
 # Preferer utiliser directement une requete SQL
 
+load_dotenv()
 # Connexion a la base de donnée locale
-conn = psycopg2.connect(database='slm', user='postgres',
-                        host='127.0.0.1', port='5432')
+conn = psycopg2.connect(
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)
 
-TABLE = 'ticker_ticker'
+TABLE = os.getenv("DB_TABLE")
 
 cur = conn.cursor()
 
 print("Execution de la requete SQL")
 cur.execute("""
     SELECT yticker, date, px_last, px_high, px_low, px_open, px_volume, meta
-    FROM ticker_ticker AS t
+    FROM {} AS t
     LEFT JOIN lexique AS l
         ON yticker = yf_ticker
     WHERE l.meta
     ORDER BY date DESC
-    """)
+    """.format(TABLE))
 
 print("Recuperation des données depuis la base en cours")
 data = cur.fetchall()
@@ -35,4 +42,4 @@ for col in ["Last", "High", "Low", "Open"]:
     df[col] = df[col].astype(float)
 
 print("Creation du csv")
-df.to_excel("ticker_ticker.xlsx")
+df.to_excel("{}.xlsx".format(TABLE))

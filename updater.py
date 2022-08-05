@@ -6,11 +6,19 @@ import psycopg2
 import enlighten
 
 
-# Connexion a la base de donnée locale
-conn = psycopg2.connect(database='slm', user='postgres',
-                        host='127.0.0.1', port='5432')
+import os
+from dotenv import load_dotenv
 
-TABLE = 'ticker_ticker'
+load_dotenv()
+# Connexion a la base de donnée locale
+conn = psycopg2.connect(
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT")
+)
+
+TABLE = os.getenv("DB_TABLE")
 
 
 def create_table(file="ticker_ticker"):
