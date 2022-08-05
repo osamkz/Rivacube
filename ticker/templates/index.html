@@ -19,9 +19,6 @@
                 <label for="sort">Trier par:</label>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary"/>
-                    Filtrer
-                </button>
             </div>
         </div>
         <div class="row">
@@ -35,6 +32,7 @@
             </div>
             <div class="col">
                 <input
+                    class="form-control"
                     type="date"
                     id="startDate"
                     name="startDate"
@@ -44,6 +42,7 @@
             </div>
             <div class="col">
                 <input
+                    class="form-control"
                     type="date"
                     id="endDate"
                     name="endDate"
@@ -69,6 +68,9 @@
                 </span>
             </div>
             <div class="col">
+                <button type="submit" class="btn btn-primary"/>
+                    Filtrer
+                </button>
             </div>
         </div>
     </form>
@@ -76,19 +78,25 @@
     <div>{{count}} valeurs</div>
 
     <nav aria-label="Pagination">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page=1">&laquo; Debut</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Precedent</a></li>
-            {% endif %}
-            <li class="page-item current">
-                <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
-            </li>
-            {% if page_obj.has_next %}
-                <li class="page-item" <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
-                <li class="page-item" <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a></li>
-            {% endif %}
-        </ul>
+      <div class="container p-4">
+        <div class="pagination justify-content-center">
+            <span class="step-links">
+              {% if page_obj.has_previous %}
+                  <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
+                  <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
+              {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+              {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#155;</a>
+                  <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
+              {% endif %}
+            </span>
+            </div>
+        </div>
     </nav>
 
 

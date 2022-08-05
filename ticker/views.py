@@ -23,8 +23,7 @@ class TickerReactView(TemplateView):
 
 class TickerListView(ListView):
     def get_queryset(self):
-        o = self.request.GET.get(
-            "desc") if self.request.GET.get("desc") else ""
+        o = "-" if self.request.GET.get("desc") == "-" else ""
         if self.request.GET.get("sort"):
             data = Ticker.objects.order_by(
                 o + self.request.GET.get("sort")).all()
