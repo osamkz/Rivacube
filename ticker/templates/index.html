@@ -87,7 +87,7 @@
               {% endif %}
 
                 <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
                 </span>
 
               {% if page_obj.has_next %}
@@ -100,7 +100,7 @@
     </nav>
 
 
-    <table class="table">
+    <table class="table table-hover table-striped">
         <thead>
             <tr>
                 <th scope="col">Ticker</th>
