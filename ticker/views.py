@@ -11,7 +11,23 @@ from datetime import date
 
 # Afficher les elements
 class TickerList(generics.ListAPIView):
-    queryset = Ticker.objects.all().order_by("-date")
+    def get_queryset(self):
+        o = "-" if self.request.GET.get("desc") == "-" else ""
+        if self.request.GET.get("sort"):
+            data = Ticker.objects.order_by(
+                o + self.request.GET.get("sort")).all()
+        else:
+            data = Ticker.objects.order_by("-date").all()
+        if self.request.GET.get("ticker"):
+            data = data.filter(yticker=self.request.GET.get("ticker"))
+        if self.request.GET.get("startDate") and self.request.GET.get("endDate"):
+            data = data.filter(date__range=[self.request.GET.get(
+                "startDate"), self.request.GET.get("endDate")])
+        elif self.request.GET.get("startDate"):
+            data = data.filter(date__range=[self.request.GET.get(
+                "startDate"), date.today()])
+
+        return data[:1000000]
 
     serializer_class = TickerSerializer
 
