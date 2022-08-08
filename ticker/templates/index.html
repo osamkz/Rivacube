@@ -90,6 +90,14 @@
                     Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
                 </span>
 
+                <div>
+                    {% if count < 1000000 %}
+                        <a href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">
+                            Telecharger le CSV
+                        </a>
+                    {%endif%}
+                </div>
+
               {% if page_obj.has_next %}
                   <a href="?page={{ page_obj.next_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#155;</a>
                   <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
