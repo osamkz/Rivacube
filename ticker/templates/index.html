@@ -115,9 +115,13 @@
         <tbody>
             {% for ticker in page_obj %}
                 <tr>
-                    {%for col in ticker%}
-                        <th>{{col}}</th>
-                    {%endfor%}
+                    <th>{{ticker.yticker}}</th>
+                    <th>{{ticker.date|date:"D d F Y"}}</th>
+                    <th>{{ticker.px_last|floatformat:2}}</th>
+                    <th>{{ticker.px_high|floatformat:2}}</th>
+                    <th>{{ticker.px_low|floatformat:2}}</th>
+                    <th>{{ticker.px_open|floatformat:2}}</th>
+                    <th>{{ticker.px_volume}}</th>
                 </tr>
             {% endfor %}
         </tbody>
