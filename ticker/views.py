@@ -55,6 +55,8 @@ class TickerListView(LoginRequiredMixin, ListView):
             data = data.filter(date__range=[self.request.GET.get(
                 "startDate"), date.today()])
 
+        if (len(self.request.GET)) == 0:
+            return data[:10000]
         return data[:1000000]
 
     def get_tickers(self):
