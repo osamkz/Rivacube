@@ -1,3 +1,3 @@
-Ticker, Date, Fermeture, High, Low, Ouverture, Volume
-{% for ticker in page_obj %}{{ ticker.yticker }},{{ ticker.date }},{{ ticker.px_last }},{{ ticker.px_high }},{{ ticker.px_low }},{{ ticker.px_open }},{{ ticker.px_volume }},
+Ticker; Date; Fermeture; High; Low; Ouverture; Volume
+{% for ticker in page_obj %}{{ ticker.yticker }};{{ ticker.date|date:"Y-m-d" }};{{ ticker.px_last }};{{ ticker.px_high }};{{ ticker.px_low }};{{ ticker.px_open }};{{ ticker.px_volume }}
 {% endfor %}
