@@ -86,32 +86,3 @@ class TickerDownloadView(TickerListView):
     template_name: str = "sample.csv"
     content_type: str = "text/csv"
     paginate_by: int = 1000000
-
-
-class toRemoveMaybe(View):
-    def get(self, request):
-        o = "-" if request.GET.get("desc") == "-" else ""
-        if request.GET.get("sort"):
-            data = Ticker.objects.order_by(
-                o + request.GET.get("sort")).all()
-        else:
-            data = Ticker.objects.order_by("-date").all()
-        if request.GET.get("ticker"):
-            data = data.filter(yticker=request.GET.get("ticker"))
-        if request.GET.get("startDate") and request.GET.get("endDate"):
-            data = data.filter(date__range=[request.GET.get(
-                "startDate"), request.GET.get("endDate")])
-        elif request.GET.get("startDate"):
-            data = data.filter(date__range=[request.GET.get(
-                "startDate"), date.today()])
-
-        data = data[0]
-
-        print(repr(data))
-
-        self.file_name = "Tickers.xlsx"
-        response = HttpResponse(
-            content_type='text/csv',
-            headers={'Content-Disposition': 'attachment; filename="Tickers.csv"'},
-        )
-        return response
