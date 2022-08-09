@@ -61,6 +61,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -137,3 +138,5 @@ REST_FRAMEWORK = {
 }
 
 USE_THOUSAND_SEPARATOR = True
+
+LOGIN_REDIRECT_URL = '/'
