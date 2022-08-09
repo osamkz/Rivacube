@@ -1,5 +1,4 @@
-from django.http import HttpResponse
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 from django.shortcuts import render
 from .models import Ticker
@@ -9,8 +8,9 @@ from django.shortcuts import render
 
 from datetime import date
 
-
 # Afficher les elements
+
+
 class TickerList(generics.ListAPIView):
     def get_queryset(self):
         o = "-" if self.request.GET.get("desc") == "-" else ""
