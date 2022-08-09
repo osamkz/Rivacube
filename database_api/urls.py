@@ -18,9 +18,8 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 
-from ticker.views import TickerReactView
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('ticker.urls'))
+    path('', include('ticker.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
