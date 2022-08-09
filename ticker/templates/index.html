@@ -156,6 +156,29 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <nav aria-label="Pagination">
+        <div class="container p-4">
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
+                        <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#155;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </nav>
+
+
 </div>
 
 <script type='text/javascript'>
