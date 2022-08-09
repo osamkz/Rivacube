@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 from datetime import date
 
-# Afficher les elements
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class TickerList(generics.ListAPIView):
@@ -38,7 +38,7 @@ class TickerReactView(TemplateView):
         return render(request, "index.html", {})
 
 
-class TickerListView(ListView):
+class TickerListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         o = "-" if self.request.GET.get("desc") == "-" else ""
         if self.request.GET.get("sort"):
@@ -78,11 +78,11 @@ class TickerListView(ListView):
         return context
 
     model = Ticker
-    template_name = "index.html"
+    template_name = "ticker/index.html"
     paginate_by = 100
 
 
 class TickerDownloadView(TickerListView):
-    template_name: str = "sample.csv"
+    template_name: str = "ticker/sample.csv"
     content_type: str = "text/csv"
     paginate_by: int = 1000000
