@@ -121,9 +121,9 @@
         </div>
 
         {%if count >= 100000%}
-            <div id="downloadText" style="display: none">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
+            <div id="downloadText" class="alert alert-warning" style="display: none; width: fit-content; margin: 10px auto 0">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
             {%elif count >= 10000%}
-            <div id="downloadText" style="display: none">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
+            <div id="downloadText" class="alert alert-warning" style="display: none; width: fit-content; margin: 10px auto 0">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
         {%endif%}
 
         <nav aria-label="Pagination">
