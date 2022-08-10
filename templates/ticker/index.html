@@ -1,183 +1,139 @@
-<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-<!-- JQuery -->
-<script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous">
-</script>
+{% extends 'base.html' %}
 
-<div class="container text-center">
-    <form method="get">
-        <div class="row">
-            <div class="col">
-                <label for="ticker-select">Ticker:</label>
+{% block head %} 
+    <script type='text/javascript'>
+        console.log("Connecté en tant que {{user}}")
+
+        function clickOnDownload() {
+            console.log("Click")
+            $(".downloadButton:eq(0)").addClass(" disabled")
+            $("#downloadDiv").css("cursor", "wait")
+            $("#downloadText").css("display", "block")
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <form method="get">
+            <div class="row">
+                <div class="col">
+                    <label for="ticker-select">Ticker:</label>
+                </div>
+                <div class="col">
+                    <label for="startDate">Debut:</label>
+                </div>
+                <div class="col">
+                    <label for="endDate">Fin:</label>
+                </div>
+                <div class="col">
+                    <label for="sort">Trier par:</label>
+                </div>
+                <div class="col">
+                    <label for="sort">Limite:</label>
+                </div>
+                <div class="col">
+                </div>
             </div>
-            <div class="col">
-                <label for="startDate">Debut:</label>
-            </div>
-            <div class="col">
-                <label for="endDate">Fin:</label>
-            </div>
-            <div class="col">
-                <label for="sort">Trier par:</label>
-            </div>
-            <div class="col">
-                <label for="sort">Limite:</label>
-            </div>
-            <div class="col">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <select class="form-select" name="ticker" id="ticker-select">
-                    <option value="">Tout</option>
-                        {%for ticker in tickers %}
-                            <option value="{{ticker}}" {%if ticker == current_ticker%}selected{%endif%}>{{ticker}}</option>
-                        {%endfor%}
-                </select>
-            </div>
-            <div class="col">
-                <input
-                    class="form-control"
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    min="1970-01-01"
-                    value="{{current_start_date}}"
-                />
-            </div>
-            <div class="col">
-                <input
-                    class="form-control"
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    min="1970-01-01"
-                    value="{{current_end_date}}"
-                />
-            </div>
-            <div class="col">
-                <select class="form-select" name="sort" id="sort">
-                    <option value="yticker" {% if current_sort == "yticker" %} selected {%endif%}>Ticker</option>
-                    <option value="date" {% if current_sort == "date" %} selected {%endif%}>Date</option>
-                    <option value="px_volume" {% if current_sort == "px_voume" %} selected {%endif%}>Volume</option>
-                </select>
-                <span>
+            <div class="row">
+                <div class="col">
+                    <select class="form-select" name="ticker" id="ticker-select">
+                        <option value="">Tout</option>
+                            {%for ticker in tickers %}
+                                <option value="{{ticker}}" {%if ticker == current_ticker%}selected{%endif%}>{{ticker}}</option>
+                            {%endfor%}
+                    </select>
+                </div>
+                <div class="col">
                     <input
-                        type="checkbox"
-                        id="desc"
-                        name="desc"
-                        value="-"
-                        {% if current_order == "-" %} checked {%endif%}
-                    >
-                    <label for="desc">Descendant</label>
-                </span>
+                        class="form-control"
+                        type="date"
+                        id="startDate"
+                        name="startDate"
+                        min="1970-01-01"
+                        value="{{current_start_date}}"
+                    />
+                </div>
+                <div class="col">
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="endDate"
+                        name="endDate"
+                        min="1970-01-01"
+                        value="{{current_end_date}}"
+                    />
+                </div>
+                <div class="col">
+                    <select class="form-select" name="sort" id="sort">
+                        <option value="yticker" {% if current_sort == "yticker" %} selected {%endif%}>Ticker</option>
+                        <option value="date" {% if current_sort == "date" %} selected {%endif%}>Date</option>
+                        <option value="px_volume" {% if current_sort == "px_voume" %} selected {%endif%}>Volume</option>
+                    </select>
+                    <span>
+                        <input
+                            type="checkbox"
+                            id="desc"
+                            name="desc"
+                            value="-"
+                            {% if current_order == "-" %} checked {%endif%}
+                        >
+                        <label for="desc">Descendant</label>
+                    </span>
+                </div>
+                <div class="col">
+                    <input
+                        class="form-control"
+                        type="number"
+                        id="limit"
+                        name="limit"
+                        value={{count|stringformat:"i"}}
+                    />
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary"/>
+                        Filtrer
+                    </button>
+                </div>
             </div>
-            <div class="col">
-                <input
-                    class="form-control"
-                    type="number"
-                    id="limit"
-                    name="limit"
-                    value={{count|stringformat:"i"}}
-                />
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-primary"/>
-                    Filtrer
-                </button>
-            </div>
+        </form>
+
+        <div>{{count}} valeurs</div>
+
+        <div
+            id="downloadDiv"
+            style="
+                margin: 0 auto;
+                width: fit-content;
+            "
+        >
+            {% if count < 1000000 %}
+                <a
+                    href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}&limit={{count|stringformat:"i"}}"
+                    download="{{current_ticker}}.csv"
+                    type="button"
+                    class="btn btn-primary downloadButton"
+                    onClick="clickOnDownload();"
+                >
+                    Telecharger le CSV
+                </a>
+            {%endif%}
         </div>
-    </form>
 
-    <div>{{count}} valeurs</div>
-
-    <div
-        id="downloadDiv"
-        style="
-            margin: 0 auto;
-            width: fit-content;
-        "
-    >
-        {% if count < 1000000 %}
-            <a
-                href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}&limit={{count|stringformat:"i"}}"
-                download="{{current_ticker}}.csv"
-                type="button"
-                class="btn btn-primary downloadButton"
-                onClick="clickOnDownload();"
-            >
-                Telecharger le CSV
-            </a>
+        {%if count >= 100000%}
+            <div id="downloadText" style="display: none">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
+            {%elif count >= 10000%}
+            <div id="downloadText" style="display: none">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
         {%endif%}
-    </div>
 
-    {%if count >= 100000%}
-        <div id="downloadText" style="display: none">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
-        {%elif count >= 10000%}
-        <div id="downloadText" style="display: none">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
-    {%endif%}
-
-    <nav aria-label="Pagination">
-      <div class="container p-4">
-        <div class="pagination justify-content-center">
-            <span class="step-links">
-              {% if page_obj.has_previous %}
-                  <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
-                  <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
-              {% endif %}
-
-                <span class="current">
-                    Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#155;</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
-                {% endif %}
-            </span>
-            </div>
-        </div>
-    </nav>
-
-
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Ticker</th>
-                <th scope="col">Date</th>
-                <th scope="col">Fermeture</th>
-                <th scope="col">High</th>
-                <th scope="col">Low</th>
-                <th scope="col">Ouverture</th>
-                <th scope="col">Volume</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ticker in page_obj %}
-                <tr>
-                    <th>{{ticker.yticker}}</th>
-                    <th>{{ticker.date|date:"D d F Y"}}</th>
-                    <th>{{ticker.px_last|floatformat:2}}</th>
-                    <th>{{ticker.px_high|floatformat:2}}</th>
-                    <th>{{ticker.px_low|floatformat:2}}</th>
-                    <th>{{ticker.px_open|floatformat:2}}</th>
-                    <th>{{ticker.px_volume}}</th>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <nav aria-label="Pagination">
+        <nav aria-label="Pagination">
         <div class="container p-4">
             <div class="pagination justify-content-center">
                 <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
-                        <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
-                    {% endif %}
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
+                {% endif %}
 
                     <span class="current">
                         Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
@@ -187,20 +143,57 @@
                         <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
                     {% endif %}
                 </span>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
 
-</div>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Ticker</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Fermeture</th>
+                    <th scope="col">High</th>
+                    <th scope="col">Low</th>
+                    <th scope="col">Ouverture</th>
+                    <th scope="col">Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticker in page_obj %}
+                    <tr>
+                        <th>{{ticker.yticker}}</th>
+                        <th>{{ticker.date|date:"D d F Y"}}</th>
+                        <th>{{ticker.px_last|floatformat:2}}</th>
+                        <th>{{ticker.px_high|floatformat:2}}</th>
+                        <th>{{ticker.px_low|floatformat:2}}</th>
+                        <th>{{ticker.px_open|floatformat:2}}</th>
+                        <th>{{ticker.px_volume}}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<script type='text/javascript'>
-    console.log("Connecté en tant que {{user}}")
+        <nav aria-label="Pagination">
+            <div class="container p-4">
+                <div class="pagination justify-content-center">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&laquo;</a>
+                            <a href="?page={{ page_obj.previous_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#139;</a>
+                        {% endif %}
 
-    function clickOnDownload() {
-        console.log("Click")
-        $(".downloadButton:eq(0)").addClass(" disabled")
-        $("#downloadDiv").css("cursor", "wait")
-        $("#downloadText").css("display", "block")
-    }
-</script>
+                        <span class="current">
+                            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&#155;</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}&ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}">&raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
