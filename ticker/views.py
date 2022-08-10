@@ -12,35 +12,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class TickerList(generics.ListAPIView):
+    # Also used for TickerListView
     def get_queryset(self):
-        o = "-" if self.request.GET.get("desc") == "-" else ""
-        if self.request.GET.get("sort"):
-            data = Ticker.objects.order_by(
-                o + self.request.GET.get("sort")).all()
-        else:
-            data = Ticker.objects.order_by("-date").all()
-        if self.request.GET.get("ticker"):
-            data = data.filter(yticker=self.request.GET.get("ticker"))
-        if self.request.GET.get("startDate") and self.request.GET.get("endDate"):
-            data = data.filter(date__range=[self.request.GET.get(
-                "startDate"), self.request.GET.get("endDate")])
-        elif self.request.GET.get("startDate"):
-            data = data.filter(date__range=[self.request.GET.get(
-                "startDate"), date.today()])
-
-        return data[:1000000]
-
-    serializer_class = TickerSerializer
-
-
-class TickerReactView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        return render(request, "index.html", {})
-
-
-class TickerListView(LoginRequiredMixin, ListView):
-    def get_queryset(self):
-        o = "-" if self.request.GET.get("desc") == "-" else ""
+        o = "-" if self.request.GET.get("order") == "desc" else ""
         if self.request.GET.get("sort"):
             data = Ticker.objects.order_by(
                 o + self.request.GET.get("sort")).all()
@@ -61,6 +35,18 @@ class TickerListView(LoginRequiredMixin, ListView):
             return data[:int(self.request.GET.get("limit"))]
         return data[:1000000]
 
+    serializer_class = TickerSerializer
+
+
+class TickerReactView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        return render(request, "index.html", {})
+
+
+class TickerListView(LoginRequiredMixin, ListView):
+    def get_queryset(self):
+        return TickerList.get_queryset(self)
+
     def get_tickers(self):
         return list(map(lambda x: x[0], (list(Ticker.objects.order_by(
             "yticker").values_list('yticker').distinct()))))
@@ -77,7 +63,7 @@ class TickerListView(LoginRequiredMixin, ListView):
         context["current_start_date"] = self.request.GET.get("startDate") or ""
         context["current_end_date"] = self.request.GET.get("endDate") or ""
         context["current_sort"] = self.request.GET.get("sort") or ""
-        context["current_order"] = self.request.GET.get("desc") or ""
+        context["current_order"] = self.request.GET.get("order") or ""
         context["current_limit"] = self.request.GET.get("limit") or "1000000"
 
         return context
