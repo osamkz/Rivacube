@@ -73,13 +73,12 @@ class TickerListView(LoginRequiredMixin, ListView):
 
         context["tickers"] = tickers
         context["count"] = len(self.get_queryset())
-        context["current_ticker"] = self.request.GET.get("ticker")
-        context["current_start_date"] = self.request.GET.get("startDate")
-        context["current_end_date"] = self.request.GET.get("endDate")
-        context["current_sort"] = self.request.GET.get("sort")
-        context["current_order"] = self.request.GET.get("desc")
-        context["current_limit"] = self.request.GET.get(
-            "limit") if self.request.GET.get("limit") else "1000000"
+        context["current_ticker"] = self.request.GET.get("ticker") or ""
+        context["current_start_date"] = self.request.GET.get("startDate") or ""
+        context["current_end_date"] = self.request.GET.get("endDate") or ""
+        context["current_sort"] = self.request.GET.get("sort") or ""
+        context["current_order"] = self.request.GET.get("desc") or ""
+        context["current_limit"] = self.request.GET.get("limit") or "1000000"
 
         return context
 

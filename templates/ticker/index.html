@@ -104,7 +104,7 @@
     >
         {% if count < 1000000 %}
             <a
-                href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}"
+                href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&desc={{current_order}}&limit={{count|stringformat:"i"}}"
                 download="{{current_ticker}}.csv"
                 type="button"
                 class="btn btn-primary downloadButton"
@@ -115,9 +115,9 @@
         {%endif%}
     </div>
 
-    {%if count > 100000%}
+    {%if count >= 100000%}
         <div id="downloadText" style="display: none">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
-        {%elif count > 10000%}
+        {%elif count >= 10000%}
         <div id="downloadText" style="display: none">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
     {%endif%}
 
