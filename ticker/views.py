@@ -57,6 +57,8 @@ class TickerListView(LoginRequiredMixin, ListView):
 
         if (len(self.request.GET)) == 0:
             return data[:10000]
+        if self.request.GET.get("limit"):
+            return data[:int(self.request.GET.get("limit"))]
         return data[:1000000]
 
     def get_tickers(self):
@@ -76,6 +78,8 @@ class TickerListView(LoginRequiredMixin, ListView):
         context["current_end_date"] = self.request.GET.get("endDate")
         context["current_sort"] = self.request.GET.get("sort")
         context["current_order"] = self.request.GET.get("desc")
+        context["current_limit"] = self.request.GET.get(
+            "limit") if self.request.GET.get("limit") else "1000000"
 
         return context
 

@@ -25,6 +25,9 @@
                 <label for="sort">Trier par:</label>
             </div>
             <div class="col">
+                <label for="sort">Limite:</label>
+            </div>
+            <div class="col">
             </div>
         </div>
         <div class="row">
@@ -72,6 +75,15 @@
                     >
                     <label for="desc">Descendant</label>
                 </span>
+            </div>
+            <div class="col">
+                <input
+                    class="form-control"
+                    type="number"
+                    id="limit"
+                    name="limit"
+                    value={{count|stringformat:"i"}}
+                />
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary"/>
