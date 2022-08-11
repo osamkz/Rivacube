@@ -29,6 +29,10 @@ class TickerList(generics.ListAPIView):
             data = data.filter(date__range=[self.request.GET.get(
                 "startDate"), date.today()])
 
+        if (self.request.get_full_path().split("?")[0] == "/api" and self.request.GET.get("limit")):
+            return data[:self.request.GET.get("limit")]
+        if (self.request.get_full_path().split("?")[0] == "/api"):
+            return data
         if (len(self.request.GET)) == 0:
             return data[:10000]
         if self.request.GET.get("limit"):
