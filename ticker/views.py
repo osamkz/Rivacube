@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class TickerList(generics.ListAPIView):
-    # Also used for TickerListView, TickerMarketList
+    # Also used for TickerListView
     def get_queryset(self):
         # Sort & Order
         o = "-" if self.request.GET.get("order") == "desc" else ""
@@ -39,9 +39,9 @@ class TickerList(generics.ListAPIView):
             data = data.filter(yticker__market=self.request.GET.get("market"))
 
         # Limit
-        if (self.request.get_full_path().split("?")[0] == "/api" and self.request.GET.get("limit")):
+        if (self.request.get_full_path().split("?")[0].split("/")[1] == "api" and self.request.GET.get("limit")):
             return data[:int(self.request.GET.get("limit"))]
-        if (self.request.get_full_path().split("?")[0] == "/api"):
+        if (self.request.get_full_path().split("?")[0].split("/")[1] == "api"):
             return data
         if (len(self.request.GET)) == 0:
             return data[:10000]
@@ -102,9 +102,42 @@ class TickerDownloadView(TickerListView):
     paginate_by: int = 1000000
 
 
-# TODO: A Finir
 class TickerMarketList(generics.ListAPIView):
-    # TODO: Ajouter le bon market depuis le body (ou les parametres) de la requete
-    # TODO: Ajouter le path dans urls.py
-    def get_queryset(self):
-        return TickerList().get_queryset().filter(yticker__market=None)
+    def get_queryset(self, **kwargs):
+        # Sort & Order
+        o = "-" if self.request.GET.get("order") == "desc" else ""
+        if self.request.GET.get("sort"):
+            data = Ticker.objects.select_related().order_by(
+                o + self.request.GET.get("sort")).all()
+        else:
+            data = Ticker.objects.select_related().order_by("-date").all()
+
+        # Ticker
+        if self.request.GET.get("ticker"):
+            data = data.filter(yticker=self.request.GET.get("ticker"))
+
+        # Date
+        if self.request.GET.get("startDate") and self.request.GET.get("endDate"):
+            data = data.filter(date__range=[self.request.GET.get(
+                "startDate"), self.request.GET.get("endDate")])
+        elif self.request.GET.get("startDate"):
+            data = data.filter(date__range=[self.request.GET.get(
+                "startDate"), date.today()])
+
+        # Market
+        if self.kwargs["market"]:
+            data = data.filter(
+                yticker__market=str.upper(self.kwargs["market"]))
+
+        # Limit
+        if (self.request.get_full_path().split("?")[0].split("/")[1] == "api" and self.request.GET.get("limit")):
+            return data[:int(self.request.GET.get("limit"))]
+        if (self.request.get_full_path().split("?")[0].split("/")[1] == "api"):
+            return data
+        if (len(self.request.GET)) == 0:
+            return data[:10000]
+        if self.request.GET.get("limit"):
+            return data[:int(self.request.GET.get("limit"))]
+        return data[:1000000]
+
+    serializer_class = TickerSerializer
