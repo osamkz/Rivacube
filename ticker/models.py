@@ -7,7 +7,7 @@ import datetime
 class Ticker(models.Model):
     id = models.CharField("id", max_length=20, primary_key=True)
     yticker = models.ForeignKey(
-        "Lexique", db_column="yticker", on_delete=models.DO_NOTHING)
+        "Lexique", db_column="yticker", on_delete=models.PROTECT)
     date = models.DateField("date", db_index=True,
                             null=False, default=datetime.date.today)
     px_last = models.FloatField("px_last", null=True)
@@ -44,18 +44,6 @@ class Lexique(models.Model):
     id_zone = models.CharField('id_zone', max_length=2)
     country = models.CharField('country', max_length=15)
     ccy = models.CharField("ccy", max_length=3)
-    adr = models.BooleanField("adr")
-    indu = models.BooleanField("indu")
-    ndx = models.BooleanField("ndx")
-    spx = models.BooleanField("spx")
-    tsx = models.BooleanField("tsx")
-    sxxp = models.BooleanField("sxxp")
-    ftsie = models.BooleanField("ftsie")
-    spi = models.BooleanField("spi")
-    nikkei = models.BooleanField("nikkei")
-    kospi = models.BooleanField("kospi")
-    hangseng = models.BooleanField("hangseng")
-    australia = models.BooleanField("australia")
     no_index = models.BooleanField("no_index")
     cybersecurity = models.BooleanField("cybersecurity")
     petsfervor = models.BooleanField("petsfervor")
@@ -63,6 +51,7 @@ class Lexique(models.Model):
     adv_mat = models.BooleanField("adv_mat")
     meta = models.BooleanField("meta")
     ltp = models.BooleanField("ltp")
+    market = models.CharField("market", max_length=9, default="NA")
 
     def __str__(self) -> str:
         return (self.yf_ticker)
