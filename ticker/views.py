@@ -30,7 +30,7 @@ class TickerList(generics.ListAPIView):
                 "startDate"), date.today()])
 
         if (self.request.get_full_path().split("?")[0] == "/api" and self.request.GET.get("limit")):
-            return data[:self.request.GET.get("limit")]
+            return data[:int(self.request.GET.get("limit"))]
         if (self.request.get_full_path().split("?")[0] == "/api"):
             return data
         if (len(self.request.GET)) == 0:
