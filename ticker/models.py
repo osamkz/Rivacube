@@ -63,3 +63,6 @@ class Lexique(models.Model):
     adv_mat = models.BooleanField("adv_mat")
     meta = models.BooleanField("meta")
     ltp = models.BooleanField("ltp")
+
+    def __str__(self) -> str:
+        return (self.yf_ticker)
