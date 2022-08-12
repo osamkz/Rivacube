@@ -32,3 +32,34 @@ class Ticker(models.Model):
 
     class Meta:
         managed = True
+
+
+class Lexique(models.Model):
+    isin = models.CharField("isin", max_length=12)
+    bbg_ticker = models.CharField("bbg_ticker", max_length=14)
+    yf_ticker = models.CharField("yf_ticker", max_length=12, primary_key=True)
+    name = models.CharField('name', max_length=100)
+    sector = models.CharField('sector', max_length=16)
+    gics_sub_sector = models.CharField("gics_sub_sector", max_length=100)
+    id_zone = models.CharField('id_zone', max_length=2)
+    country = models.CharField('country', max_length=15)
+    ccy = models.CharField("ccy", max_length=3)
+    adr = models.BooleanField("adr")
+    indu = models.BooleanField("indu")
+    ndx = models.BooleanField("ndx")
+    spx = models.BooleanField("spx")
+    tsx = models.BooleanField("tsx")
+    sxxp = models.BooleanField("sxxp")
+    ftsie = models.BooleanField("ftsie")
+    spi = models.BooleanField("spi")
+    nikkei = models.BooleanField("nikkei")
+    kospi = models.BooleanField("kospi")
+    hangseng = models.BooleanField("hangseng")
+    australia = models.BooleanField("australia")
+    no_index = models.BooleanField("no_index")
+    cybersecurity = models.BooleanField("cybersecurity")
+    petsfervor = models.BooleanField("petsfervor")
+    biodefense = models.BooleanField("biodefense")
+    adv_mat = models.BooleanField("adv_mat")
+    meta = models.BooleanField("meta")
+    ltp = models.BooleanField("ltp")
