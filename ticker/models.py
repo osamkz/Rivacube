@@ -6,8 +6,8 @@ import datetime
 
 class Ticker(models.Model):
     id = models.CharField("id", max_length=20, primary_key=True)
-    yticker = models.CharField(
-        "yticker", max_length=12, db_index=True, null=False, default="_")
+    yticker = models.ForeignKey(
+        "Lexique", db_column="yticker", on_delete=models.DO_NOTHING)
     date = models.DateField("date", db_index=True,
                             null=False, default=datetime.date.today)
     px_last = models.FloatField("px_last", null=True)
