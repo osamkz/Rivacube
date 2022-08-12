@@ -39,7 +39,7 @@ class Lexique(models.Model):
     bbg_ticker = models.CharField("bbg_ticker", max_length=14)
     yf_ticker = models.CharField("yf_ticker", max_length=12, primary_key=True)
     name = models.CharField('name', max_length=100)
-    sector = models.CharField('sector', max_length=16)
+    sector = models.CharField('sector', max_length=32)
     gics_sub_sector = models.CharField("gics_sub_sector", max_length=100)
     id_zone = models.CharField('id_zone', max_length=2)
     country = models.CharField('country', max_length=15)
