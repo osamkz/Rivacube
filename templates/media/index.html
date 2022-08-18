@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    <script type='text/javascript'>
+        console.log("Connecté en tant que {{user}}")
+
+        function clickOnDownload() {
+            console.log("Click")
+            $(".downloadButton:eq(0)").addClass(" disabled")
+            $("#downloadDiv").css("cursor", "wait")
+            $("#downloadText").css("display", "block")
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <form method="get">
+            <div class="row">
+                <div class="col">
+                    <label for="htag">Hashtag:</label>
+                </div>
+                <div class="col">
+                    <label for="source">Source:</label>
+                </div>
+                <div class="col-2">
+                    <label for="startDate">Debut:</label>
+                </div>
+                <div class="col-2">
+                    <label for="endDate">Fin:</label>
+                </div>
+                <div class="col">
+                    <label for="market">Reponse ?:</label>
+                </div>
+                <div class="col">
+                    <label for="sort">Retweet ?:</label>
+                </div>
+                <div class="col">
+                    <label for="sort">Langue:</label>
+                </div>
+                <div class="col">
+                    <label for="sort">Tri:</label>
+                </div>
+                <div class="col">
+                    <label for="limit">Limite:</label>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <select class="form-select" name="htag" id="htag">
+                        <option value="">Tout</option>
+                            {%for htag in htags %}
+                                <option value="{{htag}}" {%if htag == current_htag%}selected{%endif%}>{{htag}}</option>
+                            {%endfor%}
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" name="source" id="source">
+                        <option value="">Tout</option>
+                            {%for source in sources %}
+                                <option value="{{source}}" {%if source == current_source%}selected{%endif%}>{{source}}</option>
+                            {%endfor%}
+                    </select>
+                </div>
+                <div class="col-2">
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="startDate"
+                        name="startDate"
+                        min="1970-01-01"
+                        value="{{current_start_date}}"
+                    />
+                </div>
+                <div class="col-2">
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="endDate"
+                        name="endDate"
+                        min="1970-01-01"
+                        value="{{current_end_date}}"
+                    />
+                </div>
+                <div class="col">
+                    <select class="form-select" name="quote" id="quote">
+                        <option value="">Indifferent</option>
+                        <option value="True" {%if quote == "True" %}selected{%endif%}>Oui</option>
+                        <option value="False" {%if quote == "False" %}selected{%endif%}>Non</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" name="retweet" id="retweet">
+                        <option value="">Indifferent</option>
+                        <option value="True" {%if retweet == "True" %}selected{%endif%}>Oui</option>
+                        <option value="False" {%if retweet == "False" %}selected{%endif%}>Non</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" name="lang" id="lang">
+                        <option value="">Tout</option>
+                            {%for lang in langs %}
+                                <option value="{{lang}}" {%if lang == current_lang%}selected{%endif%}>{{lang}}</option>
+                            {%endfor%}
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" name="sort" id="sort">
+                        <option value="date" {% if current_sort == "date" %} selected {%endif%}>Date</option>
+                        <option value="htag" {% if current_sort == "htag" %} selected {%endif%}>Hashtag</option>
+                        <option value="source" {% if current_sort == "source" %} selected {%endif%}>Source</option>
+                        <option value="favorite_count" {% if current_sort == "favorite_count" %} selected {%endif%}>Favoris</option>
+                        <option value="retweet_count" {% if current_sort == "retweet_count" %} selected {%endif%}>Retweets</option>
+                        <option value="lang" {% if current_sort == "lang" %} selected {%endif%}>Langue</option>
+                    </select>
+                    <span>
+                        <input
+                            type="checkbox"
+                            id="order"
+                            name="order"
+                            value="desc"
+                            {% if current_order == "desc" %} checked {%endif%}
+                        >
+                        <label for="order">Descendant</label>
+                    </span>
+                </div>
+                <div class="col">
+                    <input
+                        class="form-control"
+                        type="number"
+                        id="limit"
+                        name="limit"
+                        value={{count|stringformat:"i"}}
+                    />
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary"/>
+                        Filtrer
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div>{{count}} valeurs</div>
+
+        <div
+            id="downloadDiv"
+            style="
+                margin: 0 auto;
+                width: fit-content;
+            "
+        >
+            {% if count < 1000000 %}
+            <!-- TODO: Ajouter le lien de telechargement du CSV
+                <a
+                    href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&order={{current_order}}&limit={{count|stringformat:"i"}}"
+                    download="{{current_ticker}}.csv"
+                    type="button"
+                    class="btn btn-primary downloadButton"
+                    onClick="clickOnDownload();"
+                >
+                    Telecharger le CSV
+                </a>
+            -->
+            {%endif%}
+        </div>
+
+        {%if count >= 100000%}
+            <div id="downloadText" class="alert alert-warning" style="display: none; width: fit-content; margin: 10px auto 0">La génération peut prendre quelques minutes, merci de ne pas quitter la page</div>
+            {%elif count >= 10000%}
+            <div id="downloadText" class="alert alert-warning" style="display: none; width: fit-content; margin: 10px auto 0">La génération peut prendre quelques secondes, merci de ne pas quitter la page</div>
+        {%endif%}
+
+        <nav aria-label="Pagination">
+        <div class="container p-4">
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&laquo;</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&#139;</a>
+                {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&#155;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&raquo;</a>
+                    {% endif %}
+                </span>
+                </div>
+            </div>
+        </nav>
+
+
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Date Creation</th>
+                    <th scope="col">Screen Name</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Reponse</th>
+                    <th scope="col">Retweet</th>
+                    <th scope="col">Favoris</th>
+                    <th scope="col">Retweets</th>
+                    <th scope="col">Langue</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: middle">
+                {% for ticker in page_obj %}
+                    <tr>
+                        <td>{{ticker.created_at|date:"D d F Y"}}</td>
+                        <td>{{ticker.screen_name}}</td>
+                        <td>{{ticker.text|truncatechars:150}}</td>
+                        <td>{{ticker.source}}</td>
+                        <td>{{ticker.is_quote}}</td>
+                        <td>{{ticker.is_retweet}}</td>
+                        <td>{{ticker.favorite_count}}</td>
+                        <td>{{ticker.retweet_count}}</td>
+                        <td>{{ticker.lang}}</td>
+                        <td>{{ticker.description|truncatechars:100}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <nav aria-label="Pagination">
+        <div class="container p-4">
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&laquo;</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&#139;</a>
+                {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&#155;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}&htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}">&raquo;</a>
+                    {% endif %}
+                </span>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
