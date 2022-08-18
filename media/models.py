@@ -27,7 +27,7 @@ class Media(models.Model):
     is_retweet = models.BooleanField("is_retweet")
     favorite_count = models.SmallIntegerField("favorite_count")
     retweet_count = models.IntegerField("retweet_count")
-    mention_screen_name = ArrayField(
+    mentions_screen_name = ArrayField(
         models.CharField(
             max_length=32
         ),
