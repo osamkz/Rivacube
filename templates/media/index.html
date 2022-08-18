@@ -87,15 +87,15 @@
                 <div class="col">
                     <select class="form-select" name="quote" id="quote">
                         <option value="">Indifferent</option>
-                        <option value="True" {%if quote == "True" %}selected{%endif%}>Oui</option>
-                        <option value="False" {%if quote == "False" %}selected{%endif%}>Non</option>
+                        <option value="True" {%if current_quote == "True" %}selected{%endif%}>Oui</option>
+                        <option value="False" {%if current_quote == "False" %}selected{%endif%}>Non</option>
                     </select>
                 </div>
                 <div class="col">
                     <select class="form-select" name="retweet" id="retweet">
                         <option value="">Indifferent</option>
-                        <option value="True" {%if retweet == "True" %}selected{%endif%}>Oui</option>
-                        <option value="False" {%if retweet == "False" %}selected{%endif%}>Non</option>
+                        <option value="True" {%if current_retweet == "True" %}selected{%endif%}>Oui</option>
+                        <option value="False" {%if current_retweet == "False" %}selected{%endif%}>Non</option>
                     </select>
                 </div>
                 <div class="col">
