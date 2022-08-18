@@ -30,13 +30,13 @@
                     <label for="endDate">Fin:</label>
                 </div>
                 <div class="col">
-                    <label for="market">Reponse ?:</label>
+                    <label for="quote">Reponse ?:</label>
                 </div>
                 <div class="col">
-                    <label for="sort">Retweet ?:</label>
+                    <label for="retweet">Retweet ?:</label>
                 </div>
                 <div class="col">
-                    <label for="sort">Langue:</label>
+                    <label for="lang">Langue:</label>
                 </div>
                 <div class="col">
                     <label for="sort">Tri:</label>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="col">
                     <select class="form-select" name="sort" id="sort">
-                        <option value="date" {% if current_sort == "date" %} selected {%endif%}>Date</option>
+                        <option value="created_at" {% if current_sort == "created_at" %} selected {%endif%}>Date</option>
                         <option value="htag" {% if current_sort == "htag" %} selected {%endif%}>Hashtag</option>
                         <option value="source" {% if current_sort == "source" %} selected {%endif%}>Source</option>
                         <option value="favorite_count" {% if current_sort == "favorite_count" %} selected {%endif%}>Favoris</option>
@@ -224,7 +224,7 @@
                         <td>{{ticker.favorite_count}}</td>
                         <td>{{ticker.retweet_count}}</td>
                         <td>{{ticker.lang}}</td>
-                        <td>{{ticker.description|truncatechars:100}}</td>
+                        <td>{%if ticker.description%}{{ticker.description|truncatechars:100}}{%endif%}</td>
                     </tr>
                 {% endfor %}
             </tbody>
