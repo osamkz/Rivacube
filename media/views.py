@@ -6,13 +6,55 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Media
 
+from datetime import date
+
 # Create your views here.
 
 
 class MediaListView(LoginRequiredMixin, ListView):
-    # TODO: Ajouter les options de filtre et de tri
     def get_queryset(self):
-        return Media.objects.all()
+
+        # Sort & Order
+        o = "-" if self.request.GET.get("order") == "desc" else ""
+        if self.request.GET.get("sort"):
+            media = Media.objects.order_by(
+                o + self.request.GET.get("sort")).all()
+        else:
+            media = Media.objects.order_by("-created_at").all()
+
+        # Htag
+        if self.request.GET.get("htag"):
+            media = media.filter(htag=self.request.GET.get("htag"))
+
+        # Source
+        if self.request.GET.get("source"):
+            media = media.filter(source=self.request.GET.get("source"))
+
+        # Date
+        if self.request.GET.get("startDate") and self.request.GET.get("endDate"):
+            media = media.filter(created_at__range=[self.request.GET.get(
+                "startDate"), self.request.GET.get("endDate")])
+        elif self.request.GET.get("startDate"):
+            media = media.filter(created_at__range=[self.request.GET.get(
+                "startDate"), date.today()])
+
+        # Quote
+        if self.request.GET.get("quote"):
+            media = media.filter(is_quote=self.request.GET.get("quote"))
+
+        # Retweet
+        if self.request.GET.get("retweet"):
+            media = media.filter(is_retweet=self.request.GET.get("retweet"))
+
+        # Langue
+        if self.request.GET.get("lang"):
+            media = media.filter(lang=self.request.GET.get("lang"))
+
+        # Limite
+        if self.request.GET.get("limit"):
+            media = media[:int(self.request.GET.get("limit"))]
+
+        return media
 
     def get_htag(self):
         return list(map(lambda x: x[0], (list(Media.objects.order_by(
