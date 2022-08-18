@@ -198,7 +198,8 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Date Creation</th>
+                    <th scope="col">Hashtag</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Screen Name</th>
                     <th scope="col">Text</th>
                     <th scope="col">Source</th>
@@ -213,7 +214,8 @@
             <tbody style="vertical-align: middle">
                 {% for ticker in page_obj %}
                     <tr>
-                        <td>{{ticker.created_at|date:"D d F Y"}}</td>
+                        <td>{{ticker.htag}}</td>
+                        <td>{{ticker.created_at|date:"d/m/y H:i"}}</td>
                         <td>{{ticker.screen_name}}</td>
                         <td>{{ticker.text|truncatechars:150}}</td>
                         <td>{{ticker.source}}</td>
