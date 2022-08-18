@@ -1,33 +1,35 @@
 {% extends 'base.html' %} {% load crispy_forms_filters %} {% load
 crispy_forms_tags %} {% block content %}
 
-<div
-  style="
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 50%
-      "
->
-   {% if form.errors %}
-  <div class="alert alert-danger">Nom d'utilisateur et/ou mot de passe incorrect.</div>
-  {% endif %} {% if next %} {% if user.is_authenticated %}
-  <div class="alert alert-warning">Votre compte n'a pas acces a cette page.</div>
-  {% else %}
-  <div class="alert alert-primary">Connectez vous pour voir cette page.</div>
-  {% endif %} {% endif %}
-
-  <form
-    method="post"
-    action="{% url 'login' %}"
+<div class="container">
+  <div
+    style="
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 50%
+        "
   >
-    {% csrf_token %} {{form.username|as_crispy_field}}
-    {{form.password|as_crispy_field}}
-    <button type="submit" class="btn btn-primary"/>
-      Connexion
-    </button>
-    <input type="hidden" name="next" value="{{ next }}" />
-  </form>
+    {% if form.errors %}
+    <div class="alert alert-danger">Nom d'utilisateur et/ou mot de passe incorrect.</div>
+    {% endif %} {% if next %} {% if user.is_authenticated %}
+    <div class="alert alert-warning">Votre compte n'a pas acces a cette page.</div>
+    {% else %}
+    <div class="alert alert-primary">Connectez vous pour voir cette page.</div>
+    {% endif %} {% endif %}
+
+    <form
+      method="post"
+      action="{% url 'login' %}"
+    >
+      {% csrf_token %} {{form.username|as_crispy_field}}
+      {{form.password|as_crispy_field}}
+      <button type="submit" class="btn btn-primary"/>
+        Connexion
+      </button>
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  </div>
 </div>
 {% endblock %}
