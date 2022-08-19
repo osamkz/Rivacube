@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+<!-- TODO: Ameliorer tout le code -->
+<!-- TODO: Separer les langages dans leurs fichiers respectifs-->
 {% block head %} 
     <script type='text/javascript'>
         console.log("Connecté en tant que {{user}}")
@@ -221,18 +223,17 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr style="cursor: pointer">
-                    <!-- TODO: Ajouter un glyphe pour signaler la colonne triée -->
-                    <th scope="col" onClick="clickOnColumn(this)" id="htag">Hashtag</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="created_at">Date</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="screen_name">Pseudo</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="text">Text</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="source">Source</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="is_quote">Reponse</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="is_retweet">Retweet</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="favorite_count">Favoris</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="retweet_count">Retweets</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="lang">Langue</th>
-                    <th scope="col" onClick="clickOnColumn(this)" id="description">Description</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="htag">Hashtag {% if current_sort == "htag" and current_order == "" %}&uarr;{% elif current_sort == "htag" %}&darr;{%endif%}</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="created_at">Date {% if current_sort == "created_at" and current_order == "" %}&uarr;{% elif current_sort == "created_at" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="screen_name">Pseudo {% if current_sort == "screen_name" and current_order == "" %}&uarr;{% elif current_sort == "screen_name"%}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="text">Text {% if current_sort == "text" and current_order == "" %}&uarr;{% elif current_sort == "text" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="source">Source {% if current_sort == "source" and current_order == "" %}&uarr;{% elif current_sort == "source" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="is_quote">Reponse {% if current_sort == "is_quote" and current_order == "" %}&uarr;{% elif current_sort == "is_quote" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="is_retweet">Retweet {% if current_sort == "is_retweet" and current_order == "" %}&uarr;{% elif current_sort == "is_retweet" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="favorite_count">Favoris {% if current_sort == "favorite_count" and current_order == "" %}&uarr;{% elif current_sort == "favorite_count" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="retweet_count">Retweets {% if current_sort == "retweet_count" and current_order == "" %}&uarr;{% elif current_sort == "retweet_count" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="lang">Langue {% if current_sort == "lang" and current_order == "" %}&uarr;{% elif current_sort == "lang" %}&darr;{%endif%}</th></th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="description">Description {% if current_sort == "description" and current_order == "" %}&uarr;{% elif current_sort == "description" %}&darr;{%endif%}</th></th>
                 </tr>
             </thead>
             <tbody style="vertical-align: middle">
