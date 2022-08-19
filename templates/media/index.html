@@ -153,17 +153,18 @@
             "
         >
             {% if count < 1000000 %}
-            <!-- TODO: Ajouter le lien de telechargement du CSV
-                <a
-                    href="download?ticker={{current_ticker}}&startDate={{current_start_date}}&endDate={{current_end_date}}&sort={{current_sort}}&order={{current_order}}&limit={{count|stringformat:"i"}}"
-                    download="{{current_ticker}}.csv"
-                    type="button"
-                    class="btn btn-primary downloadButton"
-                    onClick="clickOnDownload();"
-                >
-                    Telecharger le CSV
-                </a>
-            -->
+            <a
+                href="download?htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang={{current_lang}}&sort={{current_sort}}&order={{current_order}}&limit={{current_limit}}"
+                download=
+                    {%if current_htag == "None" or current_htag == ""%}"Media.csv"
+                    {%else%}"{{current_htag}}.csv"
+                    {%endif%}
+                type="button"
+                class="btn btn-primary downloadButton"
+                onClick="clickOnDownload();"
+            >
+                Telecharger le CSV
+            </a>
             {%endif%}
         </div>
 

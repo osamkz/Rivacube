@@ -1,0 +1,3 @@
+Status ID; User ID; Created At; Screen Name; Text; Source; Display Text Width; Reply To User ID; Reply To Screen Name; Is Quote; Is Retweet; Favorite Count; Retweet Count; Mentions Screen Name; Lang; Description; Reply To Status ID; Hashtag
+{% for media in page_obj %}{{ media.status_id }};{{ media.user_id }};{{ media.created_at|date:"Y-m-d" }};{{ media.screen_name }};"{{ media.text }}";"{{ media.source }}";{{ media.display_text_width}};{{ media.reply_to_user_id}};{{ media.reply_to_screen_name}};{{ media.is_quote}};{{ media.is_retweet }};{{ media.favorite_count}};{{ media.retweet_count}};{{ media.mentions_screen_name}};{{ media.lang}};"{{ media.description}}";{{ media.reply_to_status_id}};"{{ media.htag}}"
+{% endfor %}

@@ -16,42 +16,42 @@ class MediaListView(LoginRequiredMixin, ListView):
 
         # Sort & Order
         o = "-" if self.request.GET.get("order") == "desc" else ""
-        if self.request.GET.get("sort"):
+        if self.request.GET.get("sort") and self.request.GET.get("sort") != "None":
             media = Media.objects.order_by(
                 o + self.request.GET.get("sort")).all()
         else:
             media = Media.objects.order_by("-created_at").all()
 
         # Htag
-        if self.request.GET.get("htag"):
+        if self.request.GET.get("htag") and self.request.GET.get("htag") != "None":
             media = media.filter(htag=self.request.GET.get("htag"))
 
         # Source
-        if self.request.GET.get("source"):
+        if self.request.GET.get("source") and self.request.GET.get("source") != "None":
             media = media.filter(source=self.request.GET.get("source"))
 
         # Date
-        if self.request.GET.get("startDate") and self.request.GET.get("endDate"):
+        if self.request.GET.get("startDate") and self.request.GET.get("endDate") and self.request.GET.get("startDate") != "None" and self.request.GET.get("endDate") != "None":
             media = media.filter(created_at__range=[self.request.GET.get(
                 "startDate"), self.request.GET.get("endDate")])
-        elif self.request.GET.get("startDate"):
+        elif self.request.GET.get("startDate") and self.request.GET.get("startDate") != "None":
             media = media.filter(created_at__range=[self.request.GET.get(
                 "startDate"), date.today()])
 
         # Quote
-        if self.request.GET.get("quote"):
+        if self.request.GET.get("quote") and self.request.GET.get("quote") != "None":
             media = media.filter(is_quote=self.request.GET.get("quote"))
 
         # Retweet
-        if self.request.GET.get("retweet"):
+        if self.request.GET.get("retweet") and self.request.GET.get("retweet") != "None":
             media = media.filter(is_retweet=self.request.GET.get("retweet"))
 
         # Langue
-        if self.request.GET.get("lang"):
+        if self.request.GET.get("lang") and self.request.GET.get("lang") != "None":
             media = media.filter(lang=self.request.GET.get("lang"))
 
         # Limite
-        if self.request.GET.get("limit"):
+        if self.request.GET.get("limit") and self.request.GET.get("limit") != "None":
             media = media[:int(self.request.GET.get("limit"))]
 
         return media
@@ -95,4 +95,11 @@ class MediaListView(LoginRequiredMixin, ListView):
     paginate_by = 100
 
 # TODO: Creer la classe de Download
+
+
+class MediaDownloadView(MediaListView):
+    template_name: str = "media/sample.csv"
+    content_type: str = "text/csv"
+    paginate_by: int = 1000000
+
 # TODO: Creer la class API
