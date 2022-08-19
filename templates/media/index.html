@@ -10,6 +10,28 @@
             $("#downloadDiv").css("cursor", "wait")
             $("#downloadText").css("display", "block")
         }
+
+        function clickOnColumn(e) {
+            const order = new URLSearchParams(window.location.search).get("order")
+            const sort = new URLSearchParams(window.location.search).get("sort")
+
+            if (sort === e.id) {
+                var newOrder = order === "desc" ? "" : "desc"
+            }
+            else {
+                var newOrder = ""
+            }
+
+            window.location = (
+                window.location.origin +
+                window.location.pathname + 
+                "?htag={{current_htag}}&source={{current_source}}&startDate={{current_start_date}}&endDate={{current_end_date}}&quote={{current_quote}}&retweet={{current_retweet}}&lang{{current_lang}}=&sort=" +
+                e.id + 
+                "&order=" +
+                newOrder +
+                "&limit={{current_limit}}"
+            )
+        }
     </script>
 {% endblock %}
 
@@ -198,18 +220,19 @@
 
         <table class="table table-hover table-striped">
             <thead>
-                <tr>
-                    <th scope="col">Hashtag</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Screen Name</th>
-                    <th scope="col">Text</th>
-                    <th scope="col">Source</th>
-                    <th scope="col">Reponse</th>
-                    <th scope="col">Retweet</th>
-                    <th scope="col">Favoris</th>
-                    <th scope="col">Retweets</th>
-                    <th scope="col">Langue</th>
-                    <th scope="col">Description</th>
+                <tr style="cursor: pointer">
+                    <!-- TODO: Ajouter un glyphe pour signaler la colonne triée -->
+                    <th scope="col" onClick="clickOnColumn(this)" id="htag">Hashtag</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="created_at">Date</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="screen_name">Pseudo</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="text">Text</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="source">Source</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="is_quote">Reponse</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="is_retweet">Retweet</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="favorite_count">Favoris</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="retweet_count">Retweets</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="lang">Langue</th>
+                    <th scope="col" onClick="clickOnColumn(this)" id="description">Description</th>
                 </tr>
             </thead>
             <tbody style="vertical-align: middle">
