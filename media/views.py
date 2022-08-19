@@ -53,6 +53,8 @@ class MediaListView(LoginRequiredMixin, ListView):
         # Limite
         if self.request.GET.get("limit") and self.request.GET.get("limit") != "None":
             media = media[:int(self.request.GET.get("limit"))]
+        else:
+            media = media[:10000]
 
         return media
 
@@ -86,7 +88,7 @@ class MediaListView(LoginRequiredMixin, ListView):
         context["current_lang"] = self.request.GET.get("lang")
         context["current_sort"] = self.request.GET.get("sort")
         context["current_order"] = self.request.GET.get("order")
-        context["current_limit"] = self.request.GET.get("limit")
+        context["current_limit"] = self.request.GET.get("limit") or 10000
 
         return context
 
