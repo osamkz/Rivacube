@@ -94,8 +94,6 @@ class MediaListView(LoginRequiredMixin, ListView):
     template_name = "media/index.html"
     paginate_by = 100
 
-# TODO: Creer la classe de Download
-
 
 class MediaDownloadView(MediaListView):
     template_name: str = "media/sample.csv"
