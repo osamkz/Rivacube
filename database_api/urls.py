@@ -21,9 +21,9 @@ from django.urls import path
 from rest_framework.authtoken import views
 
 urlpatterns = [
-    # TODO: Vendredi: changer l'url des tickers
     path('admin/', admin.site.urls),
     path('', include('ticker.urls')),
+    path('ticker/', include('ticker.urls')),
     path('media/', include('media.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('generate-api-token/', views.obtain_auth_token)
