@@ -7,3 +7,10 @@ ticker_ticker.xlsx
 venv/
 
 test.py
+
+CSV/
+CSV_Media/
+
+PERF_COVID.sql
+
+pyvenv.cfg
