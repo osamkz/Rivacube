@@ -1,18 +1,21 @@
+# .env files
 .env
 
+# CSV files
 RivaLexique.xlsx
 ticker_ticker.csv
 ticker_ticker.xlsx
-
-venv/
-
-test.py
-
 CSV/
 CSV_Media/
 
+# Virtual environement files
+venv/
+
+# Unused files
+test.py
 PERF_COVID.sql
-
 pyvenv.cfg
-
 .DS_Store
+
+# Pycache folders
+__pycache__
