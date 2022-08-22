@@ -1,3 +1,5 @@
+# Sert a mettre a jour la base de donnée ticker quotidiennement
+
 import datetime
 import yfinance as yf
 import pandas as pd

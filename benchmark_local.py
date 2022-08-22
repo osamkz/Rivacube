@@ -1,3 +1,5 @@
+# Sert a tester la connexion et le temps de traitement de plusieurs requetes SQL en local
+
 from tokenize import String
 import time
 import psycopg2

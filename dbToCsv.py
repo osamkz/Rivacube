@@ -1,3 +1,5 @@
+# Sert a extraire des données de la table en format CSV
+
 import pandas as pd
 import psycopg2
 
