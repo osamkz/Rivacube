@@ -1,5 +1,8 @@
 import time
 
+import json
+import requests
+
 from _modules.ConnectionManager import ConnectionManager
 
 
@@ -33,6 +36,28 @@ def request(req) -> None:
     ))
 
 
+def request_data(url: str = "http://195.15.241.6:8000/ticker/api", results: list[dict] = None) -> list[dict]:
+    # Initialise la valeurs de results à [] si elle n'existe pas
+    results = results if results else []
+
+    # Recupere les données depuis l'api
+    data = json.loads(
+        requests.get(
+            url,
+            params={
+                "limit": "1000000"
+            },
+            headers={
+                "Authorization": "token e0340c787e21f622baeb635f9ab514cf07a61ef8"}
+        ).text)
+    results += data["results"]
+    has_next = data["next"]
+
+    if (has_next):
+        request_data(has_next, results)
+    return results
+
+
 if __name__ == '__main__':
     REQUESTS = [
         ["SELECT * FROM ticker_ticker WHERE yticker='AAPL'",
@@ -61,9 +86,24 @@ if __name__ == '__main__':
             "Tous les tickers cotés sur le Nikkei"]
     ]
 
-    man = ConnectionManager('remote')
+    choice = 0
+    while choice != "1" and choice != "2" and choice != "3":
+        choice = input("Type de benchmark:\n1: Local\n2: Remote\n3: API\n")
 
-    for r in REQUESTS:
-        request(r)
+    if choice == "1":
+        man = ConnectionManager('local')
+        for r in REQUESTS:
+            request(r)
+        man.close()
+    if choice == "2":
+        man = ConnectionManager("remote")
+        for r in REQUESTS:
+            request(r)
+        man.close()
+    if choice == "3":
+        s = time.time()
+        data = request_data()
+        e = time.time()
 
-    man.close()
+        print("{}s pour récupérer {} lignes avec 1,000,000 lignes par requete".format(
+            e - s, len(data)))
